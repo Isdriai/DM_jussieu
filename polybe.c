@@ -61,7 +61,7 @@ int division_sup(int num, int div){
 	}
 }
 
-void remplissage(char res[], char *transcription[], int const lignes, int const col, int const taille_res){
+void remplissage(char const res[], char *transcription[], int const lignes, int const col, int const taille_res){
 	for (int i = 0; i < col ; ++i)
 	{
 		transcription[i]=malloc(sizeof(char)*lignes);
@@ -79,14 +79,14 @@ void remplissage(char res[], char *transcription[], int const lignes, int const 
 	}
 }
 
-void echange(int permutation[], char *transcription[], char *resultat[], int const taille_permut, int const lignes){
+void echange(int const permutation[], char const *transcription[], char *resultat[], int const taille_permut, int const lignes){
 	for (int i = 0; i < taille_permut; ++i)
 	{
 		resultat[permutation[i]-1]=transcription[i];
 	}
 }
 
-void affiche(char *transcription[], int const col){
+void affiche(char const *transcription[], int const col){
 	for (int i = 0; i < col; ++i)
 	{
 		printf("%s\n", transcription[i]);
@@ -126,11 +126,49 @@ void chiffrement(char const *permut, char const *message){
 	affiche(resultat, taille_permut);
 }
 
+char correspondance(char const premier, char const deuxieme){
+	int i=-1;
+	int j=-1;
+	for (int k=0; k < 6 && (i==-1 || j==-1); ++k)
+	{
+		if (carre[0][k]==premier)
+		{
+			i=k+1;
+		}
+		if (carre[0][k]==deuxieme)
+		{
+			j=k;
+		}
+	}
+	return carre[i][j];
+}
+
 void dechiffrement(char const *permut, char const *chiffre){
-	// init de la permutation
 	int taille_permut=strlen(permut);
-	int *permutation=malloc(taille_permut*sizeof(int));
+	int permutation[taille_permut];
 	traduction(permutation, permut, taille_permut);
+	int taille_chiffre = strlen(chiffre);
+	if (verification(permutation, taille_permut)!=0)
+	{
+		printf("La permutation rentrée n'est pas valide, vérifiez que votre permutation de taille n contient bien TOUS les entiers de 1 à n\n");
+		return;
+	}
+	if (taille_chiffre%2!=0)
+	{
+		printf("Le message rentré ne peut pas etre un message chiffré\n");
+		return;
+	}
+	char message[taille_chiffre/2];
+	for (int i = 0; i < taille_chiffre; i+=2)
+	{
+		int un=taille_permut * (permutation[i%taille_permut]-1) + (i/taille_permut);
+		int deux=taille_permut * (permutation[(i+1)%taille_permut]-1) + ((i+1)/taille_permut);
+		char premier=chiffre[un];
+		char deuxieme= chiffre[deux];
+		message[i/2]=correspondance(premier, deuxieme);
+	}
+	message[taille_chiffre/2]='\0';
+	printf("%s\n", message);
 }
 
 int main(int argc, char const *argv[])
