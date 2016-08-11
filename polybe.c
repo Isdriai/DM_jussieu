@@ -101,7 +101,7 @@ void affiche(char **transcription, int const col){
 void chiffrement(char const *permut, char const *message){
 	// init de la permutation
 	int taille_permut=strlen(permut);
-	int permutation=malloc(taille_permut*sizeof(int));
+	int *permutation=malloc(taille_permut*sizeof(int));
 	traduction(permutation, permut, taille_permut);
 	
 	// message et sa traduction par ADFGVX sans permut
