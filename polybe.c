@@ -14,14 +14,14 @@ char carre[7][6] =
 	{'v','r','g','z','n','9'}
 };
 
-void traduction(int *permut, const char *argv, int const taille){
+void traduction(int permut[], const char *argv, int const taille){
 	for (int i = 0; i < taille; ++i)
 	{
 		permut[i]=(int)argv[i]-48;
 	}
 }
 
-void conversion_tableau(char const *init, char *res){
+void conversion_tableau(char const *init, char res[]){
 	int const limite=strlen(init);
 	for(int k= 0; k < limite; k++){
 		int trouve=0;
@@ -52,22 +52,15 @@ int division_sup(int num, int div){
 	}
 }
 
-void remplissage(char *res, char **transcription, int const lignes, int const col, int const taille_res){
-	int rempli=0;
+void remplissage(char res[], char *transcription[], int const lignes, int const col, int const taille_res){
 	for (int i = 0; i < col ; ++i)
 	{
-		transcription[i]=malloc(lignes*sizeof(char));
+		transcription[i]=malloc(sizeof(char)*lignes);
 		for (int j = 0; j < lignes; ++j)
 		{
-			rempli+=1;
-
 			if (i+j*col < taille_res)
 			{
-				if (i == 0)
-				{
-					printf("i %d  j %d  %c\n",i,j, res[i+j*col]);
-					transcription[i][j]=res[i+j*col];
-				}
+				
 				transcription[i][j]=res[i+j*col];
 			}
 			else{
@@ -75,58 +68,47 @@ void remplissage(char *res, char **transcription, int const lignes, int const co
 			}
 		}
 	}
-	printf("rempli %d \n", rempli );
-	for (int i = 0; i < col; ++i)
-	{
-		printf("%d    %s\n",i, transcription[i]);
-	}
 }
 
-void echange(int *permutation, char **transcription, char **resultat, int const taille_permut, int const lignes){
+void echange(int permutation[], char *transcription[], char *resultat[], int const taille_permut, int const lignes){
 	for (int i = 0; i < taille_permut; ++i)
 	{
-		resultat[permutation[i]-1]=malloc(lignes*sizeof(char));
 		resultat[permutation[i]-1]=transcription[i];
 	}
 }
 
-void affiche(char **transcription, int const col){
+void affiche(char *transcription[], int const col){
 	for (int i = 0; i < col; ++i)
 	{
-		printf("%s", transcription[i]);
+		printf("%s\n", transcription[i]);
 	}
 	printf("\n");
 }
 
 void chiffrement(char const *permut, char const *message){
-	// init de la permutation
+	// init de la permutation et verification
 	int taille_permut=strlen(permut);
-	int *permutation=malloc(taille_permut*sizeof(int));
+	int permutation[taille_permut];
 	traduction(permutation, permut, taille_permut);
 	
 	// message et sa traduction par ADFGVX sans permut
 	int taille_message=strlen(message);
 			
-	char *res;
-	int taille_res=taille_message*2*sizeof(char);
-	res=malloc(taille_res);
+	int taille_res=taille_message*2;
+	char res[taille_res];
 	
 	conversion_tableau(message, res);
-	printf("res : %s\n", res);
 
 	// application de la permut
 	int nbr_lignes=division_sup(taille_message*2, taille_permut);
-	printf("lignes : %d  col : %d\n", nbr_lignes, taille_permut);
-	char **transcription=malloc(sizeof(char)*taille_permut*nbr_lignes);
-	
-	remplissage(res, transcription, nbr_lignes, taille_permut, taille_res);
-	printf("transcription\n");
-	affiche(transcription, taille_permut);
+	char (*transcription)[nbr_lignes];
+	transcription=malloc(sizeof(int)*nbr_lignes*taille_permut);
 
-	char **resultat=malloc(taille_permut*nbr_lignes*sizeof(char));
+	remplissage(res, transcription, nbr_lignes, taille_permut, taille_res);
+
+	char *resultat[nbr_lignes];
 	echange(permutation, transcription, resultat, taille_permut, nbr_lignes);
 
-	printf("resultat\n");
 	affiche(resultat, taille_permut);
 }
 
