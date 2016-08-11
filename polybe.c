@@ -21,6 +21,15 @@ void traduction(int permut[], const char *argv, int const taille){
 	}
 }
 
+int verification(int const permutation[], int const taille){
+	int verif=(taille*(taille+1))/2;
+	for (int i = 0; i < taille; ++i)
+	{
+		verif-=permutation[i];
+	}
+	return verif;
+}
+
 void conversion_tableau(char const *init, char res[]){
 	int const limite=strlen(init);
 	for(int k= 0; k < limite; k++){
@@ -90,6 +99,11 @@ void chiffrement(char const *permut, char const *message){
 	int taille_permut=strlen(permut);
 	int permutation[taille_permut];
 	traduction(permutation, permut, taille_permut);
+	if (verification(permutation, taille_permut) !=0)
+	{
+		printf("La permutation rentrée n'est pas valide, vérifiez que votre permutation de taille n contient bien TOUS les entiers de 1 à n\n");
+		return;
+	}
 	
 	// message et sa traduction par ADFGVX sans permut
 	int taille_message=strlen(message);
