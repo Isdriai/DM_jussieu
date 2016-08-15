@@ -36,7 +36,7 @@ int verification(int const permutation[], int const taille){
 	return verif;
 }
 
-int division_sup(int num, int div){
+int division_sup(int const num, int const div){
 	int res=num/div;
 	if (num%div!=0)
 	{
@@ -66,7 +66,7 @@ struct Paire_char code(char const lettre){
 }
 
 void affiche(char const *chiffre, int const taille){
-	for (int i = 0; i < taille ; ++i)
+	for (int i = 0; i < taille; ++i)
 	{
 		if ((int)chiffre[i]==0)
 		{
@@ -125,12 +125,12 @@ void dechiffrement(char const *permut, char const *chiffre){
 	int permutation[taille_permut];
 	traduction(permutation, permut, taille_permut);
 	int taille_chiffre = strlen(chiffre);
-	if (verification(permutation, taille_permut)!=0)
+	if (verification(permutation, taille_permut)!=0 || taille_permut==0)
 	{
 		printf("La permutation rentrée n'est pas valide, vérifiez que votre permutation de taille n contient bien TOUS les entiers de 1 à n\n");
 		return;
 	}
-	if (taille_chiffre%2!=0 && taille_chiffre%taille_permut!=0)
+	if (taille_chiffre%taille_permut!=0)
 	{
 		printf("Le message rentré ne peut pas etre un message chiffré\n");
 		return;
@@ -138,8 +138,9 @@ void dechiffrement(char const *permut, char const *chiffre){
 	char message[taille_chiffre/2];
 	for (int i = 0; i < taille_chiffre; i+=2)
 	{
-		int un=(taille_chiffre/taille_permut) * (permutation[i%taille_permut]-1) + (i/taille_permut);
-		int deux=(taille_chiffre/taille_permut) * (permutation[(i+1)%taille_permut]-1) + ((i+1)/taille_permut);
+		int nbr_lignes=taille_chiffre/taille_permut;
+		int un=nbr_lignes * (permutation[i%taille_permut]-1) + (i/taille_permut);
+		int deux=nbr_lignes * (permutation[(i+1)%taille_permut]-1) + ((i+1)/taille_permut);
 		char premier=chiffre[un];
 		char deuxieme= chiffre[deux];
 		message[i/2]=correspondance(premier, deuxieme);
@@ -158,6 +159,6 @@ int main(int argc, char const *argv[])
 		dechiffrement(argv[2], argv[3]);
 	}
 	else{
-		printf("relancez le programme en choisissant le chiffrement '-c' ou le dechiffrement 'd'\n");
+		printf("relancez le programme en choisissant le chiffrement '-c' ou le dechiffrement '-d'\n");
 	}
 }
