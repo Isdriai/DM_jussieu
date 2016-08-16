@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <math.h>
 
 struct Paire_char
 {
@@ -34,17 +35,6 @@ int verification(int const permutation[], int const taille){
 		verif-=permutation[i];
 	}
 	return verif;
-}
-
-int division_sup(int const num, int const div){
-	int res=num/div;
-	if (num%div!=0)
-	{
-		return res+1;
-	}
-	else{
-		return res;
-	}
 }
 
 struct Paire_char code(char const lettre){
@@ -90,10 +80,10 @@ void chiffrement(char const *permut, char const *message){
 		return;
 	}
 	int taille_message=strlen(message);
-	int nbr_lignes=division_sup(taille_message*2, taille_permut);
+	int nbr_lignes=ceil(taille_message*2.0/ taille_permut);
 	int taille_tot=nbr_lignes*taille_permut;
 	char *chiffre=calloc(taille_tot, sizeof(char));
-	// calloc va initialiser la zone mémoire avec des 0 dont on va se servir pendant l'affichage
+	// calloc va initialiser la zone mémoire avec des 0 dont on va se servir pour l'affichage
 	for (int i = 0; i < taille_message; ++i)
 	{
 		struct Paire_char trad=code(message[i]);
@@ -132,13 +122,13 @@ void dechiffrement(char const *permut, char const *chiffre){
 	}
 	if (taille_chiffre%taille_permut!=0)
 	{
-		printf("Le message rentré ne peut pas etre un message chiffré\n");
+		printf("Le message rentré ne peut pas etre un message chiffré avec la permutation rentrée\n");
 		return;
 	}
 	char message[taille_chiffre/2];
+	int nbr_lignes=taille_chiffre/taille_permut;
 	for (int i = 0; i < taille_chiffre; i+=2)
 	{
-		int nbr_lignes=taille_chiffre/taille_permut;
 		int un=nbr_lignes * (permutation[i%taille_permut]-1) + (i/taille_permut);
 		int deux=nbr_lignes * (permutation[(i+1)%taille_permut]-1) + ((i+1)/taille_permut);
 		char premier=chiffre[un];
