@@ -42,7 +42,7 @@ struct Paire_char code(char const lettre){
 	int trouve=0;
 	for (int i = 1; i < 7 && trouve!=1; ++i)
 	{
-		for (int j = 0; j < 6; ++j)
+		for (int j = 0; j < 6 && trouve!=1; ++j)
 		{
 			if ((char)tolower((int)lettre)==carre[i][j])
 			{
@@ -91,6 +91,7 @@ void chiffrement(char const *permut, char const *message){
 		chiffre[(permutation[((i*2+1)%taille_permut)]-1) * nbr_lignes + ((i*2+1)/taille_permut)]=trad.deuxieme;
 	}
 	affiche(chiffre, taille_tot);
+	free(chiffre);
 }
 
 char correspondance(char const premier, char const deuxieme){
@@ -98,11 +99,11 @@ char correspondance(char const premier, char const deuxieme){
 	int j=-1;
 	for (int k=0; k < 6 && (i==-1 || j==-1); ++k)
 	{
-		if (carre[0][k]==premier)
+		if (carre[0][k]==(char)toupper((int)premier))
 		{
 			i=k+1;
 		}
-		if (carre[0][k]==deuxieme)
+		if (carre[0][k]==(char)toupper((int)deuxieme))
 		{
 			j=k;
 		}
