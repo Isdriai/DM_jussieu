@@ -1,153 +1,76 @@
+///////////////////////////////////////////////////////////////////////////////////////
+//																	 				 //
+// 	Auteur: Picot Rodolphe												 			 //
+//																	 				 //
+//	Le programme s'utilise de la facon suivante:						 			 //
+//																	 				 //
+// 		Le premier argument est l'option,'-c' pour chiffrer et 			 			 //
+// 		'-d' pour déchiffrer											 			 //
+//																	 				 //
+// 		Le deuxieme argument est la permutation, attention,				 			 //
+// 		La permutaiton doit contenir tous les entiers entre 			 			 //
+// 		1 et N avec N < 10												 			 //
+//																	 				 //
+// 		Le troisieme argument est le message à chifrer/déchiffrer		 			 //
+//																		 			 //
+// 		La ligne de compilation est :										 		 //
+//																		 			 //
+//	 	'gcc -o exe polybe.c -lm'													 //
+// 																					 //
+// 		Exemple d'utilisation: 														 //
+// 																					 //
+//		 ./exe -c 3124 attaquesurparisle12 											 //
+// 																					 //
+// 			FFGDFADXDGDFVFXFFVAXFDGVVGXFVFFFFXDFAGDX 								 //
+// 																					 //
+// 		 ./exe -d 3124 FFGDFADXDGDFVFXFFVAXFDGVVGXFVFFFFXDFAGDX 					 //
+// 																					 //
+// 			attaquesurparisle129 													 //
+//																					 //
+//	Note: il se peut que le chiffrement rajoute des '9' au message initial,			 //
+//	pour différencier les '9' légitimes des autres, on peut mettre le mot 			 //
+//	"stop" à la fin du message à chiffrer.											 //
+//								 													 //
+///////////////////////////////////////////////////////////////////////////////////////
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <math.h>
+#include "entree.h"
+#include "chiffrement.h"
+#include "dechiffrement.h"
 
-struct Paire_char
-{
-	char premier;
-	char deuxieme;
-};
-
-char carre[7][6] = 
-{
-	{'A','D','F','G','V','X'},
-	{'c','1','o','f','w','j'},
-	{'y','m','t','5','b','4'},
-	{'i','7','a','2','8','s'},
-	{'p','3','0','q','h','x'},
-	{'k','e','u','l','6','d'},
-	{'v','r','g','z','n','9'}
-};
-
-void traduction(int permut[], const char *argv, int const taille){
-	for (int i = 0; i < taille; ++i)
-	{
-		permut[i]=(int)argv[i]-48;
-	}
-}
-
-int verification(int const permutation[], int const taille){
-	int verif=(taille*(taille+1))/2;
-	for (int i = 0; i < taille; ++i)
-	{
-		verif-=permutation[i];
-	}
-	return verif;
-}
-
-struct Paire_char code(char const lettre){
-	struct Paire_char res;
-	int trouve=0;
-	for (int i = 1; i < 7 && trouve!=1; ++i)
-	{
-		for (int j = 0; j < 6 && trouve!=1; ++j)
-		{
-			if ((char)tolower((int)lettre)==carre[i][j])
-			{
-				res.premier=carre[0][i-1];
-				res.deuxieme=carre[0][j];
-				trouve=1;
-			}
-		}
-	}
-	return res;
-}
-
-void affiche(char const *chiffre, int const taille){
-	for (int i = 0; i < taille; ++i)
-	{
-		if ((int)chiffre[i]==0)
-		{
-			printf("X");
-		}
-		else{
-			printf("%c", chiffre[i]);
-		}
-	}
-	printf("\n");
-}
-
-void chiffrement(char const *permut, char const *message){
-	// init de la permutation et verification
-	int taille_permut=strlen(permut);
-	int permutation[taille_permut];
-	traduction(permutation, permut, taille_permut);
-	if (verification(permutation, taille_permut) !=0 || taille_permut==0)
-	{
-		printf("La permutation rentrée n'est pas valide, vérifiez que votre permutation de taille n contient bien TOUS les entiers de 1 à n\n");
-		return;
-	}
-	int taille_message=strlen(message);
-	int nbr_lignes=ceil(taille_message*2.0/ taille_permut);
-	int taille_tot=nbr_lignes*taille_permut;
-	char *chiffre=calloc(taille_tot, sizeof(char));
-	// calloc va initialiser la zone mémoire avec des 0 dont on va se servir pour l'affichage
-	for (int i = 0; i < taille_message; ++i)
-	{
-		struct Paire_char trad=code(message[i]);
-		chiffre[(permutation[((i*2)%taille_permut)]-1) * nbr_lignes + (i*2/taille_permut)]=trad.premier;
-		chiffre[(permutation[((i*2+1)%taille_permut)]-1) * nbr_lignes + ((i*2+1)/taille_permut)]=trad.deuxieme;
-	}
-	affiche(chiffre, taille_tot);
-	free(chiffre);
-}
-
-char correspondance(char const premier, char const deuxieme){
-	int i=-1;
-	int j=-1;
-	for (int k=0; k < 6 && (i==-1 || j==-1); ++k)
-	{
-		if (carre[0][k]==premier)
-		{
-			i=k+1;
-		}
-		if (carre[0][k]==deuxieme)
-		{
-			j=k;
-		}
-	}
-	return carre[i][j];
-}
-
-void dechiffrement(char const *permut, char const *chiffre){
-	int taille_permut=strlen(permut);
-	int permutation[taille_permut];
-	traduction(permutation, permut, taille_permut);
-	int taille_chiffre = strlen(chiffre);
-	if (verification(permutation, taille_permut)!=0 || taille_permut==0)
-	{
-		printf("La permutation rentrée n'est pas valide, vérifiez que votre permutation de taille n contient bien TOUS les entiers de 1 à n\n");
-		return;
-	}
-	if (taille_chiffre%taille_permut!=0)
-	{
-		printf("Le message rentré ne peut pas etre un message chiffré avec la permutation rentrée\n");
-		return;
-	}
-	char message[taille_chiffre/2];
-	int nbr_lignes=taille_chiffre/taille_permut;
-	for (int i = 0; i < taille_chiffre; i+=2)
-	{
-		int un=nbr_lignes * (permutation[i%taille_permut]-1) + (i/taille_permut);
-		int deux=nbr_lignes * (permutation[(i+1)%taille_permut]-1) + ((i+1)/taille_permut);
-		char premier=(char)toupper((int)chiffre[un]);
-		char deuxieme= (char)toupper((int)chiffre[deux]);
-		message[i/2]=correspondance(premier, deuxieme);
-	}
-	message[taille_chiffre/2]='\0';
-	printf("%s\n", message);
-}
 
 int main(int argc, char const *argv[])
 {
+	int taille_message=strlen(argv[3]);
+	char message[taille_message];
+	memcpy(message, argv[3], sizeof(char)*taille_message);
+	int taille_permut=length_permut(argv[2]);
+	int permut[taille_permut];
+	traduction(permut, argv[2], strlen(argv[2]));
+	if (verification(permut, taille_permut) != 0)
+	{
+		printf("la permutation n'est pas bonne, il n'y a pas tous les entiers de 1 à n\n");
+		return 0;
+	}
 	if (strcmp(argv[1], "-c")==0){
-		chiffrement(argv[2], argv[3]);
+		if (correction_message(message, taille_message) == 1)
+		{
+			printf("le message à chiffrer n'est pas bon, il ne faut que des lettres\n");
+			return 0;
+		}
+		chiffrement(permut, taille_permut, argv[3], taille_message);
 	}
 	else if (strcmp(argv[1], "-d")==0)
 	{
-		dechiffrement(argv[2], argv[3]);
+		if (correction_chiffre(message, taille_message ) != 0 || taille_message%taille_permut!=0)
+		{
+			printf("le message à déchiffrer n'est pas bon, il ne faut que des lettres légitimes\n");
+			return 0;
+		}
+		dechiffrement(permut, taille_permut, message, taille_message);
 	}
 	else{
 		printf("relancez le programme en choisissant le chiffrement '-c' ou le dechiffrement '-d'\n");
