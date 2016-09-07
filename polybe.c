@@ -34,9 +34,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 #include "entree.h"
 #include "chiffrement.h"
 #include "dechiffrement.h"
