@@ -19,11 +19,12 @@
 // 																					 //
 // 		Exemple d'utilisation: 														 //
 // 																					 //
-//		 ./exe -c 3124 attaquesurparisle12 											 //
+//		 ./exe -c 3,1,2,4 attaquesurparisle12 										 //	 
+//																					 //
 // 																					 //
 // 			FFGDFADXDGDFVFXFFVAXFDGVVGXFVFFFFXDFAGDX 								 //
 // 																					 //
-// 		 ./exe -d 3124 FFGDFADXDGDFVFXFFVAXFDGVVGXFVFFFFXDFAGDX 					 //
+// 		 ./exe -d 3,1,2,4 FFGDFADXDGDFVFXFFVAXFDGVVGXFVFFFFXDFAGDX 					 //
 // 																					 //
 // 			attaquesurparisle129 													 //
 //																					 //
