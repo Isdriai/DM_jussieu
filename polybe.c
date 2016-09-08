@@ -55,21 +55,19 @@ int main(int argc, char const *argv[])
 		return 0;
 	}
 	if (strcmp(argv[1], "-c")==0){
-		if (correction_message(message, taille_message) == 1)
+		if (chiffrement(permut, taille_permut, argv[3], taille_message) != 0)
 		{
 			printf("le message à chiffrer n'est pas bon, il ne faut que des lettres\n");
 			return 0;
 		}
-		chiffrement(permut, taille_permut, argv[3], taille_message);
 	}
 	else if (strcmp(argv[1], "-d")==0)
 	{
-		if (correction_chiffre(message, taille_message ) != 0 || taille_message%taille_permut!=0)
+		if (taille_message%taille_permut!=0 || dechiffrement(permut, taille_permut, message, taille_message) != 0 )
 		{
 			printf("le message à déchiffrer n'est pas bon, il ne faut que des lettres légitimes\n");
 			return 0;
 		}
-		dechiffrement(permut, taille_permut, message, taille_message);
 	}
 	else{
 		printf("relancez le programme en choisissant le chiffrement '-c' ou le dechiffrement '-d'\n");

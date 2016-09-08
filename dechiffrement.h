@@ -1,1 +1,1 @@
-void dechiffrement(int const *permut, int const taille_permut, char const *chiffre, int taille_chiffre);
+int dechiffrement(int const *permut, int const taille_permut, char const *chiffre, int taille_chiffre);

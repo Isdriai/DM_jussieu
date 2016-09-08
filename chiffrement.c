@@ -12,7 +12,7 @@ struct Paire_char code(char const lettre){
 	{
 		for (int j = 0; j < 6 && trouve!=1; ++j)
 		{
-			if ((char)tolower((int)lettre)==carre[i][j])
+			if (lettre==carre[i][j])
 			{
 				res.premier=carre[0][i-1];
 				res.deuxieme=carre[0][j];
@@ -37,17 +37,24 @@ void affiche(char const *chiffre, int const taille){
 	printf("\n");
 }
 
-void chiffrement(int const *permutation, int const taille_permut, char const *message, int const taille_message){
+int chiffrement(int const *permutation, int const taille_permut, char const *message, int const taille_message){
 	int nbr_lignes=ceil(taille_message*2.0/ taille_permut);
 	int taille_tot=nbr_lignes*taille_permut;
 	char *chiffre=calloc(taille_tot, sizeof(char));
 	// calloc va initialiser la zone mémoire avec des 0 dont on va se servir pour l'affichage
 	for (int i = 0; i < taille_message; ++i)
 	{
-		struct Paire_char trad=code(message[i]);
+		char lettre= (char)tolower((int)message[i]);
+		int ascii = (int)lettre;
+		if (ascii < 48 || (ascii > 57 && ascii < 97) || ascii > 122)
+		{
+			return 1;
+		}
+		struct Paire_char trad=code(lettre);
 		chiffre[(permutation[((i*2)%taille_permut)]-1) * nbr_lignes + (i*2/taille_permut)]=trad.premier;
 		chiffre[(permutation[((i*2+1)%taille_permut)]-1) * nbr_lignes + ((i*2+1)/taille_permut)]=trad.deuxieme;
 	}
 	affiche(chiffre, taille_tot);
 	free(chiffre);
+	return 0;
 }

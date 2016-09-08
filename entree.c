@@ -45,32 +45,3 @@ int verification(int const permutation[], int const taille){
 	}
 	return verif;
 }
-
-int correction_chiffre(char chiffre[], int taille){ // 0 = pas de probleme
-	for (int i = 0; i < taille; ++i)
-	{
-		chiffre[i]=(char)toupper((int)chiffre[i]);
-		for (int j = 0; j < 6; ++j)
-		{
-			if(chiffre[i] == carre[0][j]){
-				return 0;
-			}
-		}
-		return 1;
-	}
-	return 1; // ce n'est pas censé arrivé
-}
-
-int correction_message(char message[], int taille){ // 0 = pas de probleme
-	for (int i = 0; i < taille; ++i)
-	{
-		message[i]=(char)tolower((int)message[i]);
-		int ascii = (int)message[i];
-		if ( ascii < 48 || (ascii > 57 && ascii < 97) || ascii > 122 ) // 48 = 0,   57 = 9, 97 = a,  122 = z en ascii
-		{
-			printf(" i : %d message : %c  mi %d \n", i , message[i], ascii );
-			return 1;
-		}
-	}
-	return 0;
-}

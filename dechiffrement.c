@@ -18,10 +18,14 @@ char correspondance(char const premier, char const deuxieme){
 			j=k;
 		}
 	}
+	if (i == -1 && j == -1)
+	{
+		return '\0'; // caractere arbitraire pour signifier qu'il y a un probleme
+	}
 	return carre[i][j];
 }
 
-void dechiffrement(int const *permutation, int const taille_permut, char const *chiffre, int taille_chiffre){
+int dechiffrement(int const *permutation, int const taille_permut, char const *chiffre, int taille_chiffre){
 	char message[taille_chiffre/2];
 	int nbr_lignes=taille_chiffre/taille_permut;
 	for (int i = 0; i < taille_chiffre; i+=2)
@@ -31,7 +35,12 @@ void dechiffrement(int const *permutation, int const taille_permut, char const *
 		char premier=(char)toupper((int)chiffre[un]);
 		char deuxieme= (char)toupper((int)chiffre[deux]);
 		message[i/2]=correspondance(premier, deuxieme);
+		if (message[i/2] == '\0')
+		{
+			return 1;
+		}
 	}
 	message[taille_chiffre/2]='\0';
 	printf("%s\n", message);
+	return 0;
 }
