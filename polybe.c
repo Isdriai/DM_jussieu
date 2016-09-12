@@ -15,7 +15,7 @@
 //																		 			 //
 // 		La ligne de compilation est :										 		 //
 //																		 			 //
-//	 	'gcc -o exe polybe.c -lm'													 //
+//	 	'gcc -o exe *.c -lm'														 //
 // 																					 //
 // 		Exemple d'utilisation: 														 //
 // 																					 //
