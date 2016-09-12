@@ -48,7 +48,10 @@ int main(int argc, char const *argv[])
 	memcpy(message, argv[3], sizeof(char)*taille_message);
 	int taille_permut=length_permut(argv[2]);
 	int permut[taille_permut];
-	traduction(permut, argv[2], strlen(argv[2]));
+	if(traduction(permut, argv[2], strlen(argv[2])) !=0 ){
+		printf("La permutation n'est composé que de nombres\n");
+		return 0;
+	}
 	if (verification(permut, taille_permut) != 0)
 	{
 		printf("la permutation n'est pas bonne, il n'y a pas tous les entiers de 1 à n\n");
