@@ -9,7 +9,7 @@
 //																	 				 //
 // 		Le deuxieme argument est la permutation, attention,				 			 //
 // 		La permutaiton doit contenir tous les entiers entre 			 			 //
-// 		1 et N avec N < 10												 			 //
+// 		1 et N											 			 				 //
 //																	 				 //
 // 		Le troisieme argument est le message à chifrer/déchiffrer		 			 //
 //																		 			 //
@@ -19,7 +19,7 @@
 // 																					 //
 // 		Exemple d'utilisation: 														 //
 // 																					 //
-//		 ./exe -c 3,1,2,4 attaquesurparisle12 										 //	 
+//		 ./exe -c 3,1,2,4 attaquesurparisle12 										 //
 //																					 //
 // 																					 //
 // 			FFGDFADXDGDFVFXFFVAXFDGVVGXFVFFFFXDFAGDX 								 //
