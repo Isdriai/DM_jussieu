@@ -65,9 +65,14 @@ int produit(int const permutation[], int const taille){
 	int verif = fact(taille);
 	for (int i = 0; i < taille; ++i)
 	{
-		verif /= permutation[i];
+		int permut_tmp = permutation[i];
+		if (permut_tmp <= 0 || permut_tmp >= taille)
+		{
+			return 1;
+		}
+		verif /= permut_tmp;
 	}
-	return verif-1;
+	return verif-1; // retourne 0 si tout se passe bien
 }
 
 int verification(int const permutation[], int const taille){
