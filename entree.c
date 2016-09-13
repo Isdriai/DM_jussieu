@@ -43,15 +43,6 @@ int traduction(int permut[], const char *argv, int const taille){ // à modifier
 	return 0;
 }
 
-int somme(int const permutation[], int const taille){
-	int verif=(taille*(taille+1))/2;
-	for (int i = 0; i < taille; ++i)
-	{
-		verif-=permutation[i];
-	}
-	return verif;
-}
-
 int fact(int x){
 	int res = 1;
 	for (int i = 2; i <= x; ++i)
@@ -61,8 +52,9 @@ int fact(int x){
 	return res;
 }
 
-int produit(int const permutation[], int const taille){
-	int verif = fact(taille);
+int verification(int const permutation[], int const taille){
+	int verif_produit= fact(taille);
+	int verif_somme= (taille*(taille+1))/2;
 	for (int i = 0; i < taille; ++i)
 	{
 		int permut_tmp = permutation[i];
@@ -70,13 +62,10 @@ int produit(int const permutation[], int const taille){
 		{
 			return 1;
 		}
-		verif /= permut_tmp;
+		verif_produit /= permut_tmp;
+		verif_somme -= permut_tmp;
 	}
-	return verif-1; // retourne 0 si tout se passe bien
-}
-
-int verification(int const permutation[], int const taille){
-	return produit(permutation, taille) || somme(permutation, taille);
+	return verif_somme || (verif_produit-1); // retourne 0 si tout se passe bien
 }
 
 /*int verification(int const permutation[], int const taille){
