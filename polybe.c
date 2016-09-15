@@ -43,6 +43,11 @@
 
 int main(int argc, char const *argv[])
 {
+	if (argc != 4)
+	{
+		printf("Il n'y a pas le bon nombre d'arguments\n");
+		return 0;
+	}
 	int taille_message=strlen(argv[3]);
 	char message[taille_message];
 	memcpy(message, argv[3], sizeof(char)*taille_message);

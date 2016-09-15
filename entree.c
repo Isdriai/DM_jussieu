@@ -58,8 +58,9 @@ int verification(int const permutation[], int const taille){
 	for (int i = 0; i < taille; ++i)
 	{
 		int permut_tmp = permutation[i];
-		if (permut_tmp <= 0 || permut_tmp >= taille)
+		if (permut_tmp <= 0 || permut_tmp > taille)
 		{
+			printf("coucou\n");
 			return 1;
 		}
 		verif_produit /= permut_tmp;
