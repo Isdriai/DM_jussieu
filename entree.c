@@ -17,7 +17,7 @@ int length_permut(char const permut[]){
 	return res;
 }
 
-int traduction(int permut[], const char *argv, int const taille){ // à modifier
+int traduction(int permut[], const char *argv, int const taille){ 
 	int pos=0;
 	int pui=0;
 	int tmp=0;
@@ -40,6 +40,7 @@ int traduction(int permut[], const char *argv, int const taille){ // à modifier
 			pui++;
 		}
 	}
+	permut[pos]=tmp;
 	return 0;
 }
 
@@ -60,7 +61,6 @@ int verification(int const permutation[], int const taille){
 		int permut_tmp = permutation[i];
 		if (permut_tmp <= 0 || permut_tmp > taille)
 		{
-			printf("coucou\n");
 			return 1;
 		}
 		verif_produit /= permut_tmp;
